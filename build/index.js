@@ -64,14 +64,561 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: SyntaxError: Unexpected token (69:7)\n\n\u001b[0m \u001b[90m 67 | \u001b[39m  render() {\n \u001b[90m 68 | \u001b[39m    \u001b[36mreturn\u001b[39m (\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 69 | \u001b[39m      \u001b[33m<\u001b[39m\u001b[33m>\u001b[39m\n \u001b[90m    | \u001b[39m       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 70 | \u001b[39m        {\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mprops\u001b[33m.\u001b[39mhours\u001b[33m.\u001b[39mmap(item \u001b[33m=>\u001b[39m {\n \u001b[90m 71 | \u001b[39m          \u001b[36mreturn\u001b[39m (\n \u001b[90m 72 | \u001b[39m            \u001b[33m<\u001b[39m\u001b[33mdiv\u001b[39m key\u001b[33m=\u001b[39m{item\u001b[33m.\u001b[39mlabel} className\u001b[33m=\u001b[39m\u001b[32m\"item times\"\u001b[39m\u001b[33m>\u001b[39m{item\u001b[33m.\u001b[39mlabel}\u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mdiv\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n");
+module.exports = require("react");
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0,
+        v = c === 'x' ? r : r && 0x3 | 0x8;
+    return v.toString(16);
+  });
+}
+
+function parseString(json) {
+  return JSON.stringify(json);
+}
+
+function parseJson(json) {
+  return JSON.parse(json);
+}
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color + '7a';
+}
+
+function getIntervalo(firstNumber, secondNumber) {
+  var latest = void 0,
+      first = void 0,
+      numbers = [],
+      i = void 0;
+  if (firstNumber > secondNumber) {
+    latest = firstNumber;
+    first = secondNumber;
+  } else if (secondNumber > firstNumber) {
+    latest = secondNumber;
+    first = firstNumber;
+  } else {
+    latest = secondNumber;
+    first = firstNumber;
+  }
+  for (i = first; i <= latest; i++) {
+    numbers.push(i);
+  }
+  return numbers;
+}
+
+function getTopLeft(selection) {
+  var element = null;
+  if (selection.days && selection.days.length > 0 && selection.hours && selection.hours.length > 0) {
+    element = document.getElementById(selection.hours[0].key + '-' + selection.days[0].key);
+  }
+  return element;
+}
+
+function removeDuplicates(originalArray, prop) {
+  var newArray = [];
+  var lookupObject = {};
+  for (var key in originalArray) {
+    lookupObject[originalArray[key][prop]] = originalArray[key];
+  }
+  for (var _key in lookupObject) {
+    newArray.push(lookupObject[_key]);
+  }
+  return newArray;
+}
+
+var Selectable = function (_React$Component) {
+  _inherits(Selectable, _React$Component);
+
+  function Selectable() {
+    _classCallCheck(this, Selectable);
+
+    return _possibleConstructorReturn(this, (Selectable.__proto__ || Object.getPrototypeOf(Selectable)).apply(this, arguments));
+  }
+
+  _createClass(Selectable, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          hour = _props.hour,
+          day = _props.day;
+
+      return _react2.default.createElement('div', { className: 'item selectable',
+        'data-info': parseString({
+          hour: hour,
+          day: day
+        }),
+        title: day.label + ' - ' + hour.label,
+        id: hour.key + '-' + day.key });
+    }
+  }]);
+
+  return Selectable;
+}(_react2.default.Component);
+
+var IS7Schedule = function (_React$Component2) {
+  _inherits(IS7Schedule, _React$Component2);
+
+  function IS7Schedule(props) {
+    _classCallCheck(this, IS7Schedule);
+
+    var _this2 = _possibleConstructorReturn(this, (IS7Schedule.__proto__ || Object.getPrototypeOf(IS7Schedule)).call(this, props));
+
+    _this2.handleMouseDown = _this2.handleMouseDown.bind(_this2);
+    _this2.handleMouseUp = _this2.handleMouseUp.bind(_this2);
+    var hours = [];
+    var key = 0;
+    var hoursStart = _this2.props.hoursStart ? _this2.props.hoursStart : 0;
+    var hoursEnd = _this2.props.hoursEnd ? _this2.props.hoursEnd : 24;
+    for (var index = hoursStart; index < hoursEnd; index++) {
+      var intervalsMinute = _this2.props.intervalsMinute ? _this2.props.intervalsMinute : ['00', '15', '30', '45'];
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = intervalsMinute[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var item = _step.value;
+
+          var $index = index < 10 ? '0' + index : index;
+          hours.push({
+            key: key++,
+            label: $index + ':' + item
+          });
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+    var days = [{
+      key: 0,
+      label: 'Lunes'
+    }, {
+      key: 1,
+      label: 'Martes'
+    }, {
+      key: 2,
+      label: 'Miércoles'
+    }, {
+      key: 3,
+      label: 'Jueves'
+    }, {
+      key: 4,
+      label: 'Viernes'
+    }, {
+      key: 5,
+      label: 'Sábado'
+    }, {
+      key: 6,
+      label: 'Domingo'
+    }];
+
+    _this2.state = {
+      hours: hours,
+      days: days,
+      elementStart: null,
+      elementEnd: null,
+      selections: _this2.props.selections && Array.isArray(_this2.props.selections) ? _this2.props.selections : []
+    };
+
+    return _this2;
+  }
+
+  _createClass(IS7Schedule, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      document.addEventListener('selectionchange', function (event) {
+        document.getSelection().removeAllRanges();
+      });
+      this.buildPictures();
+    }
+  }, {
+    key: 'handleMouseDown',
+    value: function handleMouseDown(event) {
+      var target = event.target;
+      if (target && target.classList && target.classList.contains('active')) {
+        this.setState({
+          elementStart: null
+        });
+        //console.error('Está seleccionando espacios ocupados')
+      } else {
+        var elementStart = this.getInfo(target);
+        this.setState({
+          elementStart: elementStart
+        });
+      }
+    }
+  }, {
+    key: 'handleMouseUp',
+    value: function handleMouseUp(event) {
+      var _this3 = this;
+
+      var target = event.target;
+      if (target && target.classList && target.classList.contains('active')) {
+        this.setState({
+          elementEnd: null
+        });
+        //console.error('Está seleccionando espacios ocupados')
+      } else {
+        var elementEnd = this.getInfo(target);
+        this.setState({
+          elementEnd: elementEnd
+        });
+      }
+      setTimeout(function () {
+        if (_this3.state.elementStart && _this3.state.elementEnd) {
+          _this3.getInterval();
+        }
+      }, 100);
+    }
+  }, {
+    key: 'getInterval',
+    value: function getInterval() {
+      var intervalHours = getIntervalo(this.state.elementStart.hour.key, this.state.elementEnd.hour.key);
+      var intervalDay = getIntervalo(this.state.elementStart.day.key, this.state.elementEnd.day.key);
+      var selection = this.buildPicture(intervalHours, intervalDay);
+      var elementTopLeft = getTopLeft(selection);
+      this.addSelection(selection);
+      if (elementTopLeft) {
+        this.addCloseButton(elementTopLeft, selection.uuidv4);
+      }
+    }
+  }, {
+    key: 'addSelection',
+    value: function addSelection(selection) {
+      if (selection.hours && selection.hours.length > 0 && selection.days && selection.days.length > 0) {
+        selection.uuidv4 = uuidv4();
+        //selection.backgroundColor = getRandomColor()
+        this.state.selections.push(selection);
+        if (this.props.handleChange) {
+          this.props.handleChange(this.state.selections, selection);
+        }
+      }
+    }
+  }, {
+    key: 'buildPicture',
+    value: function buildPicture(intervalHours, intervalDay, element) {
+      var days = [];
+      var hours = [];
+
+      var isNew = element ? false : true;
+
+      var elements = this.getSelectedItems(intervalHours, intervalDay, isNew);
+
+      var backgroundColor = getRandomColor();
+
+      if (!isNew && element.backgroundColor && element.backgroundColor.length > 0) {
+        backgroundColor = element.backgroundColor;
+      }
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = elements[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _element = _step2.value;
+
+          var info = this.getInfo(_element);
+          info.backgroundColor = backgroundColor;
+          if (info) {
+            this.addClassActive(_element);
+            _element.style.backgroundColor = backgroundColor;
+            hours.push(info.hour);
+            days.push(info.day);
+          }
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      hours = removeDuplicates(hours, 'key');
+      days = removeDuplicates(days, 'key');
+      return {
+        hours: hours,
+        days: days
+      };
+    }
+  }, {
+    key: 'buildPictures',
+    value: function buildPictures() {
+      var selections = this.state.selections;
+      if (selections && Array.isArray(selections)) {
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+          for (var _iterator3 = selections[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            var selection = _step3.value;
+
+            selection.uuidv4 = selection.uuidv4 ? selection.uuidv4 : uuidv4();
+            if (selection.hours && selection.days) {
+              var intervalHours = selection.hours.map(function (item) {
+                return item.key;
+              });
+              var intervalDay = selection.days.map(function (item) {
+                return item.key;
+              });
+              var picture = this.buildPicture(intervalHours, intervalDay, selection);
+              var elementTopLeft = getTopLeft(picture);
+              if (elementTopLeft) {
+                this.addCloseButton(elementTopLeft, selection.uuidv4);
+              }
+            }
+          }
+        } catch (err) {
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+              _iterator3.return();
+            }
+          } finally {
+            if (_didIteratorError3) {
+              throw _iteratorError3;
+            }
+          }
+        }
+      }
+    }
+  }, {
+    key: 'addCloseButton',
+    value: function addCloseButton(element, uuidv4) {
+      var _this4 = this;
+
+      var node = document.createElement("SPAN");
+      node.classList.add('close');
+      var textnode = document.createTextNode("X");
+      node.appendChild(textnode);
+      node.setAttribute('data-uuidv4', uuidv4);
+      node.addEventListener('click', function (event) {
+        var target = event.target;
+        if (target.dataset.uuidv4) {
+          _this4.removePicture(target.dataset.uuidv4);
+        }
+      });
+      element.appendChild(node);
+    }
+  }, {
+    key: 'removePicture',
+    value: function removePicture(uuidv4) {
+      var selection = this.state.selections.find(function (item) {
+        return item.uuidv4 === uuidv4;
+      });
+      if (selection && selection.uuidv4) {
+        this.setState({
+          selections: this.state.selections.filter(function (item) {
+            return item.uuidv4 !== selection.uuidv4;
+          })
+        });
+        if (selection.hours && selection.days) {
+          var intervalHours = selection.hours.map(function (item) {
+            return item.key;
+          });
+          var intervalDay = selection.days.map(function (item) {
+            return item.key;
+          });
+          var elements = this.getSelectedItems(intervalHours, intervalDay);
+          var backgroundColor = '#fff';
+          var _iteratorNormalCompletion4 = true;
+          var _didIteratorError4 = false;
+          var _iteratorError4 = undefined;
+
+          try {
+            for (var _iterator4 = elements[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+              var element = _step4.value;
+
+              var info = this.getInfo(element);
+              if (info) {
+                element.style.backgroundColor = backgroundColor;
+                element.classList.remove('active');
+                element.innerHTML = '';
+              }
+            }
+          } catch (err) {
+            _didIteratorError4 = true;
+            _iteratorError4 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                _iterator4.return();
+              }
+            } finally {
+              if (_didIteratorError4) {
+                throw _iteratorError4;
+              }
+            }
+          }
+
+          if (this.props.handleChange) {
+            this.props.handleChange(this.state.selections, selection);
+          }
+        }
+      }
+    }
+  }, {
+    key: 'getSelectedItems',
+    value: function getSelectedItems(intervalHours, intervalDay, isNew) {
+      var elements = [];
+      var validItems = true;
+      for (var x in intervalHours) {
+        for (var y in intervalDay) {
+          var element = document.getElementById(intervalHours[x] + '-' + intervalDay[y]);
+          if (element) {
+            elements.push(element);
+          }
+          if (element.classList.contains('active') && isNew) {
+            validItems = false;
+            //console.error('Está seleccionando espacios ocupados')
+          }
+        }
+      }
+      return validItems ? elements : [];
+    }
+  }, {
+    key: 'addClassActive',
+    value: function addClassActive(element) {
+      if (element.classList && element.classList.add && !element.classList.contains('active')) {
+        element.classList.add('active');
+        return true;
+      }
+      return false;
+    }
+  }, {
+    key: 'getInfo',
+    value: function getInfo(target) {
+      var info = null;
+      if (target && target.dataset && target.dataset.info) {
+        var _parseJson = parseJson(target.dataset.info),
+            hour = _parseJson.hour,
+            day = _parseJson.day;
+
+        info = {
+          element: document.getElementById(hour.key + '-' + day.key),
+          hour: hour,
+          day: day
+        };
+      }
+      return info;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _state = this.state,
+          hours = _state.hours,
+          days = _state.days;
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'schedule',
+          onMouseDown: this.handleMouseDown,
+          onMouseUp: this.handleMouseUp },
+        _react2.default.createElement(
+          'div',
+          { className: 'items' },
+          _react2.default.createElement(
+            'div',
+            { className: 'title' },
+            'Horas'
+          ),
+          hours.map(function (item) {
+            return _react2.default.createElement(
+              'div',
+              { key: item.label, className: 'item times' },
+              item.label
+            );
+          })
+        ),
+        days.map(function (day) {
+          return _react2.default.createElement(
+            'div',
+            { key: day.key, className: 'items' },
+            _react2.default.createElement(
+              'div',
+              { className: 'title' },
+              day.label
+            ),
+            hours.map(function (hour) {
+              return _react2.default.createElement(Selectable, {
+                key: hour.label,
+                hour: hour, day: day });
+            })
+          );
+        }),
+        _react2.default.createElement(
+          'style',
+          { jsx: '' },
+          '\n          .schedule {\n            display: grid;\n            grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n          }\n          .schedule .title {\n            background-color: #333;\n            color: #fff;\n            border-color: #333!important;\n          }\n          .schedule .item, .schedule .title {\n            font-family: sans-serif;\n            border: solid 0.5px #ddd;\n            min-height: 40px;\n            display: flex;\n            align-items: center;\n            padding: 0 5px;\n          }\n          .schedule .title {\n            justify-content: center;\n          }\n          .schedule .item.selectable:hover {\n            background-color: #ddd;\n          }\n          .schedule .item.selectable.active {\n            background-color: #d4edda;\n            border-color: #3333337a!important;\n          }\n          .schedule .item.times {\n            background-color: #dddddda7;\n          }\n          .schedule span.close {\n            position: relative;\n            top: -22px;\n            font-size: 13px;\n            left: -13px;\n            background: red;\n            color: #fff;\n            width: 16px;\n            border-radius: 50%;\n            height: 16px;\n            display: flex;\n            justify-content: center;\n            cursor: pointer;\n          }\n        '
+        )
+      );
+    }
+  }]);
+
+  return IS7Schedule;
+}(_react2.default.Component);
+
+exports.default = IS7Schedule;
 
 /***/ })
 /******/ ]);

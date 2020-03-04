@@ -63,37 +63,6 @@ function removeDuplicates (originalArray, prop) {
     return newArray
 }
 
-class Times extends React.Component {
-  render() {
-    return (
-      <>
-        {this.props.hours.map(item => {
-          return (
-            <div key={item.label} className="item times">{item.label}</div>
-          )
-        })}
-      </>
-    );
-  }
-}
-
-class Blocks extends React.Component {
-  render () {
-    const { day, hours } = this.props
-    return (
-      <>
-        {hours.map(item => {
-          return (
-            <Selectable 
-              key={item.label}
-              hour={item} day={day}/>
-          )
-        })}
-      </>
-    )
-  }
-}
-
 class Selectable extends React.Component {
   render () {
     const { hour, day } = this.props
@@ -381,16 +350,26 @@ class IS7Schedule extends React.Component {
           <div className="title">
             Horas
           </div>
-          <Times hours={hours}/>
+          {hours.map(item => {
+            return (
+              <div key={item.label} className="item times">{item.label}</div>
+            )
+          })}
         </div>
         {
-          days.map(item => {
+          days.map(day => {
             return (
-              <div key={item.key} className="items">
+              <div key={day.key} className="items">
                 <div className="title">
-                  {item.label}
+                  {day.label}
                 </div>
-                <Blocks day={item} hours={hours}/>
+                {hours.map(hour => {
+                  return (
+                    <Selectable 
+                      key={hour.label}
+                      hour={hour} day={day}/>
+                  )
+                })}
               </div>
             )
           })
