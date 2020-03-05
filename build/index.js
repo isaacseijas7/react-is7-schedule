@@ -64,17 +64,11 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-module.exports = require("react");
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83,47 +77,32 @@ module.exports = require("react");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function uuidv4() {
+var uuidv4 = exports.uuidv4 = function uuidv4() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = Math.random() * 16 | 0,
         v = c === 'x' ? r : r && 0x3 | 0x8;
     return v.toString(16);
   });
-}
+};
 
-function parseString(json) {
+var parseString = exports.parseString = function parseString(json) {
   return JSON.stringify(json);
-}
+};
 
-function parseJson(json) {
+var parseJson = exports.parseJson = function parseJson(json) {
   return JSON.parse(json);
-}
+};
 
-function getRandomColor() {
+var getRandomColor = exports.getRandomColor = function getRandomColor() {
   var letters = '0123456789ABCDEF';
   var color = '#';
   for (var i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color + '7a';
-}
+};
 
-function getIntervalo(firstNumber, secondNumber) {
+var getIntervalo = exports.getIntervalo = function getIntervalo(firstNumber, secondNumber) {
   var latest = void 0,
       first = void 0,
       numbers = [],
@@ -142,17 +121,17 @@ function getIntervalo(firstNumber, secondNumber) {
     numbers.push(i);
   }
   return numbers;
-}
+};
 
-function getTopLeft(selection) {
+var getTopLeft = exports.getTopLeft = function getTopLeft(selection) {
   var element = null;
   if (selection.days && selection.days.length > 0 && selection.hours && selection.hours.length > 0) {
     element = document.getElementById(selection.hours[0].key + '-' + selection.days[0].key);
   }
   return element;
-}
+};
 
-function removeDuplicates(originalArray, prop) {
+var removeDuplicates = exports.removeDuplicates = function removeDuplicates(originalArray, prop) {
   var newArray = [];
   var lookupObject = {};
   for (var key in originalArray) {
@@ -162,7 +141,40 @@ function removeDuplicates(originalArray, prop) {
     newArray.push(lookupObject[_key]);
   }
   return newArray;
-}
+};
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = require("react");
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _utils = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Selectable = function (_React$Component) {
   _inherits(Selectable, _React$Component);
@@ -181,7 +193,7 @@ var Selectable = function (_React$Component) {
           day = _props.day;
 
       return _react2.default.createElement('div', { className: 'item selectable',
-        'data-info': parseString({
+        'data-info': (0, _utils.parseString)({
           hour: hour,
           day: day
         }),
@@ -275,9 +287,11 @@ var IS7Schedule = function (_React$Component2) {
   _createClass(IS7Schedule, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      document.addEventListener('selectionchange', function (event) {
-        document.getSelection().removeAllRanges();
-      });
+      this.buildPictures();
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps() {
       this.buildPictures();
     }
   }, {
@@ -322,10 +336,10 @@ var IS7Schedule = function (_React$Component2) {
   }, {
     key: 'getInterval',
     value: function getInterval() {
-      var intervalHours = getIntervalo(this.state.elementStart.hour.key, this.state.elementEnd.hour.key);
-      var intervalDay = getIntervalo(this.state.elementStart.day.key, this.state.elementEnd.day.key);
+      var intervalHours = (0, _utils.getIntervalo)(this.state.elementStart.hour.key, this.state.elementEnd.hour.key);
+      var intervalDay = (0, _utils.getIntervalo)(this.state.elementStart.day.key, this.state.elementEnd.day.key);
       var selection = this.buildPicture(intervalHours, intervalDay);
-      var elementTopLeft = getTopLeft(selection);
+      var elementTopLeft = (0, _utils.getTopLeft)(selection);
       this.addSelection(selection);
       if (elementTopLeft) {
         this.addCloseButton(elementTopLeft, selection.uuidv4);
@@ -335,7 +349,7 @@ var IS7Schedule = function (_React$Component2) {
     key: 'addSelection',
     value: function addSelection(selection) {
       if (selection.hours && selection.hours.length > 0 && selection.days && selection.days.length > 0) {
-        selection.uuidv4 = uuidv4();
+        selection.uuidv4 = (0, _utils.uuidv4)();
         //selection.backgroundColor = getRandomColor()
         this.state.selections.push(selection);
         if (this.props.handleChange) {
@@ -353,7 +367,7 @@ var IS7Schedule = function (_React$Component2) {
 
       var elements = this.getSelectedItems(intervalHours, intervalDay, isNew);
 
-      var backgroundColor = getRandomColor();
+      var backgroundColor = (0, _utils.getRandomColor)();
 
       if (!isNew && element.backgroundColor && element.backgroundColor.length > 0) {
         backgroundColor = element.backgroundColor;
@@ -391,8 +405,8 @@ var IS7Schedule = function (_React$Component2) {
         }
       }
 
-      hours = removeDuplicates(hours, 'key');
-      days = removeDuplicates(days, 'key');
+      hours = (0, _utils.removeDuplicates)(hours, 'key');
+      days = (0, _utils.removeDuplicates)(days, 'key');
       return {
         hours: hours,
         days: days
@@ -411,7 +425,7 @@ var IS7Schedule = function (_React$Component2) {
           for (var _iterator3 = selections[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
             var selection = _step3.value;
 
-            selection.uuidv4 = selection.uuidv4 ? selection.uuidv4 : uuidv4();
+            selection.uuidv4 = selection.uuidv4 ? selection.uuidv4 : (0, _utils.uuidv4)();
             if (selection.hours && selection.days) {
               var intervalHours = selection.hours.map(function (item) {
                 return item.key;
@@ -420,7 +434,7 @@ var IS7Schedule = function (_React$Component2) {
                 return item.key;
               });
               var picture = this.buildPicture(intervalHours, intervalDay, selection);
-              var elementTopLeft = getTopLeft(picture);
+              var elementTopLeft = (0, _utils.getTopLeft)(picture);
               if (elementTopLeft) {
                 this.addCloseButton(elementTopLeft, selection.uuidv4);
               }
@@ -550,7 +564,7 @@ var IS7Schedule = function (_React$Component2) {
     value: function getInfo(target) {
       var info = null;
       if (target && target.dataset && target.dataset.info) {
-        var _parseJson = parseJson(target.dataset.info),
+        var _parseJson = (0, _utils.parseJson)(target.dataset.info),
             hour = _parseJson.hour,
             day = _parseJson.day;
 
@@ -609,7 +623,7 @@ var IS7Schedule = function (_React$Component2) {
         _react2.default.createElement(
           'style',
           { jsx: '' },
-          '\n          .schedule {\n            display: grid;\n            grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n          }\n          .schedule .title {\n            background-color: #333;\n            color: #fff;\n            border-color: #333!important;\n          }\n          .schedule .item, .schedule .title {\n            font-family: sans-serif;\n            border: solid 0.5px #ddd;\n            min-height: 40px;\n            display: flex;\n            align-items: center;\n            padding: 0 5px;\n          }\n          .schedule .title {\n            justify-content: center;\n          }\n          .schedule .item.selectable:hover {\n            background-color: #ddd;\n          }\n          .schedule .item.selectable.active {\n            background-color: #d4edda;\n            border-color: #3333337a!important;\n          }\n          .schedule .item.times {\n            background-color: #dddddda7;\n          }\n          .schedule span.close {\n            position: relative;\n            top: -22px;\n            font-size: 13px;\n            left: -13px;\n            background: red;\n            color: #fff;\n            width: 16px;\n            border-radius: 50%;\n            height: 16px;\n            display: flex;\n            justify-content: center;\n            cursor: pointer;\n          }\n        '
+          '\n          .schedule {\n            display: grid;\n            grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n          }\n          .schedule .title {\n            background-color: #333;\n            color: #fff;\n            border-color: #333!important;\n          }\n          .schedule .item, .schedule .title {\n            font-family: sans-serif;\n            border: solid 0.5px #ddd;\n            min-height: 40px;\n            display: flex;\n            align-items: center;\n            padding: 0 5px;\n            font-size: 14px;\n          }\n          .schedule .title {\n            justify-content: center;\n          }\n          .schedule .item.selectable:hover {\n            background-color: #ddd;\n          }\n          .schedule .item.selectable.active {\n            background-color: #d4edda;\n            border-color: #3333337a!important;\n          }\n          .schedule .item.times {\n            background-color: #dddddda7;\n          }\n          .schedule span.close {\n            position: relative;\n            top: -22px;\n            font-size: 13px;\n            left: -13px;\n            background: red;\n            color: #fff;\n            width: 16px;\n            border-radius: 50%;\n            height: 16px;\n            display: flex;\n            justify-content: center;\n            cursor: pointer;\n          }\n        '
         )
       );
     }

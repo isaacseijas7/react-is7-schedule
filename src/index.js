@@ -1,67 +1,13 @@
 import React from 'react';
-
-function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r && 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
-
-function parseString (json){
-  return JSON.stringify(json)
-}
-
-function parseJson (json){
-  return JSON.parse(json)
-}
-
-function getRandomColor() {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return `${color}7a`;
-}
-
-
-function getIntervalo(firstNumber, secondNumber) {
-  let latest, first, numbers = [], i;
-  if (firstNumber > secondNumber) {
-    latest = firstNumber;
-    first = secondNumber;
-  } else if (secondNumber > firstNumber) {
-    latest = secondNumber;
-    first = firstNumber;
-  } else {
-    latest = secondNumber;
-    first = firstNumber;
-  }
-  for (i = first; i <= latest; i++) {
-    numbers.push(i);
-  }
-  return numbers;
-}
-
-function getTopLeft (selection) {
-  let element = null
-  if (selection.days && selection.days.length > 0 && selection.hours && selection.hours.length > 0){
-    element = document.getElementById(`${selection.hours[0].key}-${selection.days[0].key}`)
-  }
-  return element
-}
-
-function removeDuplicates (originalArray, prop) {
-  let newArray = []
-    let lookupObject  = {}
-    for(let key in originalArray) {
-        lookupObject[originalArray[key][prop]] = originalArray[key]
-    }
-    for(let key in lookupObject) {
-        newArray.push(lookupObject[key])
-    }
-    return newArray
-}
+import {
+  uuidv4,
+  parseString,
+  parseJson,
+  getRandomColor,
+  getIntervalo,
+  getTopLeft,
+  removeDuplicates
+} from './utils'
 
 class Selectable extends React.Component {
   render () {
@@ -137,10 +83,11 @@ class IS7Schedule extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener('selectionchange', (event) => {
-      document.getSelection().removeAllRanges()
-    })
     this.buildPictures()
+  }
+
+  componentWillReceiveProps () {
+    this.buildPictures() 
   }
   
   handleMouseDown(event) {
@@ -347,9 +294,9 @@ class IS7Schedule extends React.Component {
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}>
         <div className="items">
-          <div className="title">
+          {/*<div className="title">
             Horas
-          </div>
+          </div>*/}
           {hours.map(item => {
             return (
               <div key={item.label} className="item times">{item.label}</div>
@@ -360,9 +307,9 @@ class IS7Schedule extends React.Component {
           days.map(day => {
             return (
               <div key={day.key} className="items">
-                <div className="title">
+                {/*<div className="title">
                   {day.label}
-                </div>
+                </div>*/}
                 {hours.map(hour => {
                   return (
                     <Selectable 
@@ -391,6 +338,7 @@ class IS7Schedule extends React.Component {
             display: flex;
             align-items: center;
             padding: 0 5px;
+            font-size: 14px;
           }
           .schedule .title {
             justify-content: center;
