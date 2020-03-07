@@ -76,7 +76,8 @@ class IS7Schedule extends React.Component {
       hours,
       days,
       elementStart: null,
-      elementEnd: null
+      elementEnd: null,
+      internalSelection: (this.props.selections && Array.isArray(this.props.selections))? this.props.selections: []/**/
     };
 
   }
@@ -86,6 +87,9 @@ class IS7Schedule extends React.Component {
   }
 
   componentWillReceiveProps (next_props) {
+    for (let selection of this.state.internalSelection) {
+      this.removePicture(selection.uuidv4)
+    }
     setTimeout(() => {
       this.buildPictures()   
     }, 100);
@@ -132,18 +136,17 @@ class IS7Schedule extends React.Component {
     let selection = this.buildPicture(intervalHours, intervalDay)
     let elementTopLeft = getTopLeft(selection)
     this.addSelection(selection)
-    if (elementTopLeft) {
+    selection.uuidv4 = (selection.uuidv4)? selection.uuidv4: uuidv4()
+    if (elementTopLeft && selection.uuidv4) {
       this.addCloseButton(elementTopLeft, selection.uuidv4)
     }
   }
 
   addSelection(selection) {
     if (selection.hours && selection.hours.length > 0 && selection.days && selection.days.length > 0) {
-      selection.uuidv4 = uuidv4()
-      //selection.backgroundColor = getRandomColor()
-      this.props.selections.push(selection)
+      this.state.internalSelection.push(selection)
       if (this.props.handleChange) {
-        this.props.handleChange(this.props.selections, selection)
+        this.props.handleChange(this.state.internalSelection, selection)
       }
     }
 
@@ -184,9 +187,13 @@ class IS7Schedule extends React.Component {
 
   buildPictures () {
     let selections = (this.props.selections && Array.isArray(this.props.selections))? this.props.selections: []
+
+    this.setState({
+      internalSelection: [...selections] 
+    })
+
     if(selections && Array.isArray(selections)) {
       for (const selection of selections) {
-        selection.uuidv4 = (selection.uuidv4)? selection.uuidv4: uuidv4()
         if(selection.hours && selection.days) {
           let intervalHours = selection.hours.map(item => {
             return item.key
@@ -196,7 +203,8 @@ class IS7Schedule extends React.Component {
           })
           let picture =  this.buildPicture(intervalHours, intervalDay, selection)
           let elementTopLeft = getTopLeft(picture)
-          if (elementTopLeft) {
+          selection.uuidv4 = (selection.uuidv4)? selection.uuidv4: uuidv4()
+          if (elementTopLeft && selection.uuidv4) {
             this.addCloseButton(elementTopLeft, selection.uuidv4)
           }
         }
@@ -220,10 +228,10 @@ class IS7Schedule extends React.Component {
   }
 
   removePicture (uuidv4) {
-    let selection = this.props.selections.find(item => item.uuidv4 === uuidv4)
+    let selection = this.state.internalSelection.find(item => item.uuidv4 === uuidv4)
     if (selection && selection.uuidv4) {
       this.setState({
-        selections: this.props.selections.filter(item => item.uuidv4 !== selection.uuidv4) 
+        internalSelection: this.state.internalSelection.filter(item => item.uuidv4 !== selection.uuidv4) 
       })
       if (selection.hours && selection.days) {
         let intervalHours = selection.hours.map(item => {
@@ -289,7 +297,7 @@ class IS7Schedule extends React.Component {
   }
 
   render() {
-    const { hours, days } = this.state
+    const { hours, days, internalSelection } = this.state
     return (
       <div>
         <div className="schedule schedule_head">

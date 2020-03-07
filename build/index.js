@@ -170,6 +170,8 @@ var _utils = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -277,7 +279,8 @@ var IS7Schedule = function (_React$Component2) {
       hours: hours,
       days: days,
       elementStart: null,
-      elementEnd: null
+      elementEnd: null,
+      internalSelection: _this2.props.selections && Array.isArray(_this2.props.selections) ? _this2.props.selections : [] /**/
     };
 
     return _this2;
@@ -292,6 +295,31 @@ var IS7Schedule = function (_React$Component2) {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(next_props) {
       var _this3 = this;
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = this.state.internalSelection[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var selection = _step2.value;
+
+          this.removePicture(selection.uuidv4);
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
 
       setTimeout(function () {
         _this3.buildPictures();
@@ -344,7 +372,8 @@ var IS7Schedule = function (_React$Component2) {
       var selection = this.buildPicture(intervalHours, intervalDay);
       var elementTopLeft = (0, _utils.getTopLeft)(selection);
       this.addSelection(selection);
-      if (elementTopLeft) {
+      selection.uuidv4 = selection.uuidv4 ? selection.uuidv4 : (0, _utils.uuidv4)();
+      if (elementTopLeft && selection.uuidv4) {
         this.addCloseButton(elementTopLeft, selection.uuidv4);
       }
     }
@@ -352,11 +381,9 @@ var IS7Schedule = function (_React$Component2) {
     key: 'addSelection',
     value: function addSelection(selection) {
       if (selection.hours && selection.hours.length > 0 && selection.days && selection.days.length > 0) {
-        selection.uuidv4 = (0, _utils.uuidv4)();
-        //selection.backgroundColor = getRandomColor()
-        this.props.selections.push(selection);
+        this.state.internalSelection.push(selection);
         if (this.props.handleChange) {
-          this.props.handleChange(this.props.selections, selection);
+          this.props.handleChange(this.state.internalSelection, selection);
         }
       }
     }
@@ -376,13 +403,13 @@ var IS7Schedule = function (_React$Component2) {
         backgroundColor = element.backgroundColor;
       }
 
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
 
       try {
-        for (var _iterator2 = elements[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var _element = _step2.value;
+        for (var _iterator3 = elements[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var _element = _step3.value;
 
           var info = this.getInfo(_element);
           info.backgroundColor = backgroundColor;
@@ -394,16 +421,16 @@ var IS7Schedule = function (_React$Component2) {
           }
         }
       } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
           }
         } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
+          if (_didIteratorError3) {
+            throw _iteratorError3;
           }
         }
       }
@@ -419,16 +446,20 @@ var IS7Schedule = function (_React$Component2) {
     key: 'buildPictures',
     value: function buildPictures() {
       var selections = this.props.selections && Array.isArray(this.props.selections) ? this.props.selections : [];
+
+      this.setState({
+        internalSelection: [].concat(_toConsumableArray(selections))
+      });
+
       if (selections && Array.isArray(selections)) {
-        var _iteratorNormalCompletion3 = true;
-        var _didIteratorError3 = false;
-        var _iteratorError3 = undefined;
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
 
         try {
-          for (var _iterator3 = selections[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-            var selection = _step3.value;
+          for (var _iterator4 = selections[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+            var selection = _step4.value;
 
-            selection.uuidv4 = selection.uuidv4 ? selection.uuidv4 : (0, _utils.uuidv4)();
             if (selection.hours && selection.days) {
               var intervalHours = selection.hours.map(function (item) {
                 return item.key;
@@ -438,22 +469,23 @@ var IS7Schedule = function (_React$Component2) {
               });
               var picture = this.buildPicture(intervalHours, intervalDay, selection);
               var elementTopLeft = (0, _utils.getTopLeft)(picture);
-              if (elementTopLeft) {
+              selection.uuidv4 = selection.uuidv4 ? selection.uuidv4 : (0, _utils.uuidv4)();
+              if (elementTopLeft && selection.uuidv4) {
                 this.addCloseButton(elementTopLeft, selection.uuidv4);
               }
             }
           }
         } catch (err) {
-          _didIteratorError3 = true;
-          _iteratorError3 = err;
+          _didIteratorError4 = true;
+          _iteratorError4 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion3 && _iterator3.return) {
-              _iterator3.return();
+            if (!_iteratorNormalCompletion4 && _iterator4.return) {
+              _iterator4.return();
             }
           } finally {
-            if (_didIteratorError3) {
-              throw _iteratorError3;
+            if (_didIteratorError4) {
+              throw _iteratorError4;
             }
           }
         }
@@ -480,12 +512,12 @@ var IS7Schedule = function (_React$Component2) {
   }, {
     key: 'removePicture',
     value: function removePicture(uuidv4) {
-      var selection = this.props.selections.find(function (item) {
+      var selection = this.state.internalSelection.find(function (item) {
         return item.uuidv4 === uuidv4;
       });
       if (selection && selection.uuidv4) {
         this.setState({
-          selections: this.props.selections.filter(function (item) {
+          internalSelection: this.state.internalSelection.filter(function (item) {
             return item.uuidv4 !== selection.uuidv4;
           })
         });
@@ -498,13 +530,13 @@ var IS7Schedule = function (_React$Component2) {
           });
           var elements = this.getSelectedItems(intervalHours, intervalDay);
           var backgroundColor = '#fff';
-          var _iteratorNormalCompletion4 = true;
-          var _didIteratorError4 = false;
-          var _iteratorError4 = undefined;
+          var _iteratorNormalCompletion5 = true;
+          var _didIteratorError5 = false;
+          var _iteratorError5 = undefined;
 
           try {
-            for (var _iterator4 = elements[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-              var element = _step4.value;
+            for (var _iterator5 = elements[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+              var element = _step5.value;
 
               var info = this.getInfo(element);
               if (info) {
@@ -514,16 +546,16 @@ var IS7Schedule = function (_React$Component2) {
               }
             }
           } catch (err) {
-            _didIteratorError4 = true;
-            _iteratorError4 = err;
+            _didIteratorError5 = true;
+            _iteratorError5 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                _iterator4.return();
+              if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                _iterator5.return();
               }
             } finally {
-              if (_didIteratorError4) {
-                throw _iteratorError4;
+              if (_didIteratorError5) {
+                throw _iteratorError5;
               }
             }
           }
@@ -584,7 +616,8 @@ var IS7Schedule = function (_React$Component2) {
     value: function render() {
       var _state = this.state,
           hours = _state.hours,
-          days = _state.days;
+          days = _state.days,
+          internalSelection = _state.internalSelection;
 
       return _react2.default.createElement(
         'div',
