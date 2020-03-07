@@ -280,7 +280,7 @@ var IS7Schedule = function (_React$Component2) {
       days: days,
       elementStart: null,
       elementEnd: null,
-      internalSelection: _this2.props.selections && Array.isArray(_this2.props.selections) ? _this2.props.selections : [] /**/
+      internalSelection: _this2.props.selections && Array.isArray(_this2.props.selections) ? _this2.props.selections : []
     };
 
     return _this2;
@@ -561,7 +561,7 @@ var IS7Schedule = function (_React$Component2) {
           }
 
           if (this.props.handleChange) {
-            this.props.handleChange(this.props.selections, selection);
+            this.props.handleChange(this.state.internalSelection, selection);
           }
         }
       }
@@ -616,8 +616,7 @@ var IS7Schedule = function (_React$Component2) {
     value: function render() {
       var _state = this.state,
           hours = _state.hours,
-          days = _state.days,
-          internalSelection = _state.internalSelection;
+          days = _state.days;
 
       return _react2.default.createElement(
         'div',

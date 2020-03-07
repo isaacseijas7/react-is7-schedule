@@ -77,7 +77,7 @@ class IS7Schedule extends React.Component {
       days,
       elementStart: null,
       elementEnd: null,
-      internalSelection: (this.props.selections && Array.isArray(this.props.selections))? this.props.selections: []/**/
+      internalSelection: (this.props.selections && Array.isArray(this.props.selections))? this.props.selections: []
     };
 
   }
@@ -251,7 +251,7 @@ class IS7Schedule extends React.Component {
           }
         }
         if (this.props.handleChange) {
-          this.props.handleChange(this.props.selections, selection)
+          this.props.handleChange(this.state.internalSelection, selection)
         }
       }
     }
@@ -297,7 +297,7 @@ class IS7Schedule extends React.Component {
   }
 
   render() {
-    const { hours, days, internalSelection } = this.state
+    const { hours, days } = this.state
     return (
       <div>
         <div className="schedule schedule_head">
