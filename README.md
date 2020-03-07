@@ -1,6 +1,6 @@
 # react-is7-schedule
 
-Componente de horario
+Schedule Component
 
 ## Install npm
 
@@ -8,20 +8,23 @@ Componente de horario
 npm i react-is7-schedule
 ```
 
+[https://www.npmjs.com/package/react-is7-schedule](https://www.npmjs.com/package/react-is7-schedule)
+
 ## Install yarn
 
 ```bash
 yarn add react-is7-schedule
 ```
 
-You need to add the provider to AdonisJS at `start/app.js`:
+[https://yarnpkg.com/package/react-is7-schedule](https://yarnpkg.com/package/react-is7-schedule)
+
+## Implementation
 
 ```javascript
 import React from 'react';
-
 import IS7Schedule from 'react-is7-schedule'
 
-//Array de pre-seleccionados
+//Array of preselected
 const selections = [{
   "hours": [
     {
@@ -49,20 +52,20 @@ const selections = [{
   ],
 }]
 
-//Método que se ejecuta al cambiar el estado del horario, retorna el array de espacios seleccionados y el espacio agregado o eliminado
+//Method that is executed when changing the state of the schedule, returns the array of selected spaces and the space added or deleted
 const handleChange = (selections, selection) => {
   console.log('Array de items: ', selections)
   console.log('Item agregado o eliminado: ', selection)
 }
 
 
-//Configuración
-  //Intervalos por minutos
-  const intervalsMinute = ['00', '30'] // ['00', '15', '30', '35']
-  //Hora de inicio
-  let hoursStart = 0
-  //Hora de final
-  let hoursEnd = 24
+//Setting
+// Intervals for minutes
+const intervalsMinute = ['00', '30'] // ['00', '15', '30', '35']
+// Start time
+let hoursStart = 0
+// End time
+let hoursEnd = 24
 
 class App extends React.Component {
 
@@ -85,7 +88,7 @@ class App extends React.Component {
     return (
       <div>
         <button onClick={this.handleClick}>
-          Añadir
+          Add
         </button>
         <IS7Schedule
           selections={ selections }
