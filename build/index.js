@@ -277,8 +277,7 @@ var IS7Schedule = function (_React$Component2) {
       hours: hours,
       days: days,
       elementStart: null,
-      elementEnd: null,
-      selections: _this2.props.selections && Array.isArray(_this2.props.selections) ? _this2.props.selections : []
+      elementEnd: null
     };
 
     return _this2;
@@ -291,8 +290,12 @@ var IS7Schedule = function (_React$Component2) {
     }
   }, {
     key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps() {
-      this.buildPictures();
+    value: function componentWillReceiveProps(next_props) {
+      var _this3 = this;
+
+      setTimeout(function () {
+        _this3.buildPictures();
+      }, 100);
     }
   }, {
     key: 'handleMouseDown',
@@ -313,7 +316,7 @@ var IS7Schedule = function (_React$Component2) {
   }, {
     key: 'handleMouseUp',
     value: function handleMouseUp(event) {
-      var _this3 = this;
+      var _this4 = this;
 
       var target = event.target;
       if (target && target.classList && target.classList.contains('active')) {
@@ -328,8 +331,8 @@ var IS7Schedule = function (_React$Component2) {
         });
       }
       setTimeout(function () {
-        if (_this3.state.elementStart && _this3.state.elementEnd) {
-          _this3.getInterval();
+        if (_this4.state.elementStart && _this4.state.elementEnd) {
+          _this4.getInterval();
         }
       }, 100);
     }
@@ -351,9 +354,9 @@ var IS7Schedule = function (_React$Component2) {
       if (selection.hours && selection.hours.length > 0 && selection.days && selection.days.length > 0) {
         selection.uuidv4 = (0, _utils.uuidv4)();
         //selection.backgroundColor = getRandomColor()
-        this.state.selections.push(selection);
+        this.props.selections.push(selection);
         if (this.props.handleChange) {
-          this.props.handleChange(this.state.selections, selection);
+          this.props.handleChange(this.props.selections, selection);
         }
       }
     }
@@ -383,7 +386,7 @@ var IS7Schedule = function (_React$Component2) {
 
           var info = this.getInfo(_element);
           info.backgroundColor = backgroundColor;
-          if (info) {
+          if (info && _element.classList && !_element.classList.contains('active')) {
             this.addClassActive(_element);
             _element.style.backgroundColor = backgroundColor;
             hours.push(info.hour);
@@ -415,7 +418,7 @@ var IS7Schedule = function (_React$Component2) {
   }, {
     key: 'buildPictures',
     value: function buildPictures() {
-      var selections = this.state.selections;
+      var selections = this.props.selections && Array.isArray(this.props.selections) ? this.props.selections : [];
       if (selections && Array.isArray(selections)) {
         var _iteratorNormalCompletion3 = true;
         var _didIteratorError3 = false;
@@ -459,7 +462,7 @@ var IS7Schedule = function (_React$Component2) {
   }, {
     key: 'addCloseButton',
     value: function addCloseButton(element, uuidv4) {
-      var _this4 = this;
+      var _this5 = this;
 
       var node = document.createElement("SPAN");
       node.classList.add('close');
@@ -469,7 +472,7 @@ var IS7Schedule = function (_React$Component2) {
       node.addEventListener('click', function (event) {
         var target = event.target;
         if (target.dataset.uuidv4) {
-          _this4.removePicture(target.dataset.uuidv4);
+          _this5.removePicture(target.dataset.uuidv4);
         }
       });
       element.appendChild(node);
@@ -477,12 +480,12 @@ var IS7Schedule = function (_React$Component2) {
   }, {
     key: 'removePicture',
     value: function removePicture(uuidv4) {
-      var selection = this.state.selections.find(function (item) {
+      var selection = this.props.selections.find(function (item) {
         return item.uuidv4 === uuidv4;
       });
       if (selection && selection.uuidv4) {
         this.setState({
-          selections: this.state.selections.filter(function (item) {
+          selections: this.props.selections.filter(function (item) {
             return item.uuidv4 !== selection.uuidv4;
           })
         });
@@ -526,7 +529,7 @@ var IS7Schedule = function (_React$Component2) {
           }
 
           if (this.props.handleChange) {
-            this.props.handleChange(this.state.selections, selection);
+            this.props.handleChange(this.props.selections, selection);
           }
         }
       }
@@ -585,45 +588,63 @@ var IS7Schedule = function (_React$Component2) {
 
       return _react2.default.createElement(
         'div',
-        { className: 'schedule',
-          onMouseDown: this.handleMouseDown,
-          onMouseUp: this.handleMouseUp },
+        null,
         _react2.default.createElement(
           'div',
-          { className: 'items' },
+          { className: 'schedule schedule_head' },
           _react2.default.createElement(
             'div',
-            { className: 'title' },
-            'Horas'
-          ),
-          hours.map(function (item) {
-            return _react2.default.createElement(
-              'div',
-              { key: item.label, className: 'item times' },
-              item.label
-            );
-          })
-        ),
-        days.map(function (day) {
-          return _react2.default.createElement(
-            'div',
-            { key: day.key, className: 'items' },
+            { className: 'items' },
             _react2.default.createElement(
               'div',
               { className: 'title' },
-              day.label
-            ),
-            hours.map(function (hour) {
-              return _react2.default.createElement(Selectable, {
-                key: hour.label,
-                hour: hour, day: day });
-            })
-          );
-        }),
+              'Horas'
+            )
+          ),
+          days.map(function (day) {
+            return _react2.default.createElement(
+              'div',
+              { key: day.key, className: 'items' },
+              _react2.default.createElement(
+                'div',
+                { className: 'title' },
+                day.label
+              )
+            );
+          })
+        ),
         _react2.default.createElement(
-          'style',
-          { jsx: '' },
-          '\n          .schedule {\n            display: grid;\n            grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n          }\n          .schedule .title {\n            background-color: #333;\n            color: #fff;\n            border-color: #333!important;\n          }\n          .schedule .item, .schedule .title {\n            font-family: sans-serif;\n            border: solid 0.5px #ddd;\n            min-height: 40px;\n            display: flex;\n            align-items: center;\n            padding: 0 5px;\n            font-size: 14px;\n          }\n          .schedule .title {\n            justify-content: center;\n          }\n          .schedule .item.selectable:hover {\n            background-color: #ddd;\n          }\n          .schedule .item.selectable.active {\n            background-color: #d4edda;\n            border-color: #3333337a!important;\n          }\n          .schedule .item.times {\n            background-color: #dddddda7;\n          }\n          .schedule span.close {\n            position: relative;\n            top: -22px;\n            font-size: 13px;\n            left: -13px;\n            background: red;\n            color: #fff;\n            width: 16px;\n            border-radius: 50%;\n            height: 16px;\n            display: flex;\n            justify-content: center;\n            cursor: pointer;\n          }\n        '
+          'div',
+          { className: 'schedule',
+            onMouseDown: this.handleMouseDown,
+            onMouseUp: this.handleMouseUp },
+          _react2.default.createElement(
+            'div',
+            { className: 'items' },
+            hours.map(function (item) {
+              return _react2.default.createElement(
+                'div',
+                { key: item.label, className: 'item times' },
+                item.label
+              );
+            })
+          ),
+          days.map(function (day) {
+            return _react2.default.createElement(
+              'div',
+              { key: day.key, className: 'items' },
+              hours.map(function (hour) {
+                return _react2.default.createElement(Selectable, {
+                  key: hour.label,
+                  hour: hour, day: day });
+              })
+            );
+          }),
+          _react2.default.createElement(
+            'style',
+            { jsx: '' },
+            '\n            .schedule {\n              display: grid;\n              grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;\n            }\n            .schedule_head .items {\n\n            }\n            .schedule .title {\n              background-color: #333;\n              color: #fff;\n              border-color: #333!important;\n            }\n            .schedule .item, .schedule .title {\n              font-family: sans-serif;\n              border: solid 0.5px #ddd;\n              min-height: 40px;\n              display: flex;\n              align-items: center;\n              padding: 0 5px;\n              font-size: 14px;\n            }\n            .schedule .title {\n              justify-content: center;\n            }\n            .schedule .item.selectable:hover {\n              background-color: #ddd;\n            }\n            .schedule .item.selectable.active {\n              background-color: #d4edda;\n              border-color: #3333337a!important;\n            }\n            .schedule .item.times {\n              background-color: #dddddda7;\n            }\n            .schedule span.close {\n              position: relative;\n              top: -22px;\n              font-size: 13px;\n              left: -13px;\n              background: red;\n              color: #fff;\n              width: 16px;\n              border-radius: 50%;\n              height: 16px;\n              display: flex;\n              justify-content: center;\n              cursor: pointer;\n            }\n          '
+          )
         )
       );
     }

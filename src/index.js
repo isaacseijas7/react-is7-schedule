@@ -76,8 +76,7 @@ class IS7Schedule extends React.Component {
       hours,
       days,
       elementStart: null,
-      elementEnd: null,
-      selections: (this.props.selections && Array.isArray(this.props.selections))? this.props.selections: []
+      elementEnd: null
     };
 
   }
@@ -86,8 +85,10 @@ class IS7Schedule extends React.Component {
     this.buildPictures()
   }
 
-  componentWillReceiveProps () {
-    this.buildPictures() 
+  componentWillReceiveProps (next_props) {
+    setTimeout(() => {
+      this.buildPictures()   
+    }, 100);
   }
   
   handleMouseDown(event) {
@@ -140,9 +141,9 @@ class IS7Schedule extends React.Component {
     if (selection.hours && selection.hours.length > 0 && selection.days && selection.days.length > 0) {
       selection.uuidv4 = uuidv4()
       //selection.backgroundColor = getRandomColor()
-      this.state.selections.push(selection)
+      this.props.selections.push(selection)
       if (this.props.handleChange) {
-        this.props.handleChange(this.state.selections, selection)
+        this.props.handleChange(this.props.selections, selection)
       }
     }
 
@@ -165,7 +166,7 @@ class IS7Schedule extends React.Component {
     for (const element of elements) {
       let info = this.getInfo(element)
       info.backgroundColor = backgroundColor
-      if(info) {
+      if(info && element.classList && !element.classList.contains('active')) {
         this.addClassActive(element)
         element.style.backgroundColor = backgroundColor
         hours.push(info.hour);
@@ -182,7 +183,7 @@ class IS7Schedule extends React.Component {
   }
 
   buildPictures () {
-    let selections = this.state.selections 
+    let selections = (this.props.selections && Array.isArray(this.props.selections))? this.props.selections: []
     if(selections && Array.isArray(selections)) {
       for (const selection of selections) {
         selection.uuidv4 = (selection.uuidv4)? selection.uuidv4: uuidv4()
@@ -219,10 +220,10 @@ class IS7Schedule extends React.Component {
   }
 
   removePicture (uuidv4) {
-    let selection = this.state.selections.find(item => item.uuidv4 === uuidv4)
+    let selection = this.props.selections.find(item => item.uuidv4 === uuidv4)
     if (selection && selection.uuidv4) {
       this.setState({
-        selections: this.state.selections.filter(item => item.uuidv4 !== selection.uuidv4) 
+        selections: this.props.selections.filter(item => item.uuidv4 !== selection.uuidv4) 
       })
       if (selection.hours && selection.days) {
         let intervalHours = selection.hours.map(item => {
@@ -242,7 +243,7 @@ class IS7Schedule extends React.Component {
           }
         }
         if (this.props.handleChange) {
-          this.props.handleChange(this.state.selections, selection)
+          this.props.handleChange(this.props.selections, selection)
         }
       }
     }
@@ -290,84 +291,101 @@ class IS7Schedule extends React.Component {
   render() {
     const { hours, days } = this.state
     return (
-      <div className="schedule"
-        onMouseDown={this.handleMouseDown}
-        onMouseUp={this.handleMouseUp}>
-        <div className="items">
-          {/*<div className="title">
-            Horas
-          </div>*/}
-          {hours.map(item => {
-            return (
-              <div key={item.label} className="item times">{item.label}</div>
-            )
-          })}
+      <div>
+        <div className="schedule schedule_head">
+          <div className="items">
+            <div className="title">
+              Horas
+            </div>
+          </div>
+          {
+            days.map(day => {
+              return (
+                <div key={day.key} className="items">
+                  <div className="title">
+                    {day.label}
+                  </div>
+                </div>
+              )
+            })
+          }
         </div>
-        {
-          days.map(day => {
-            return (
-              <div key={day.key} className="items">
-                {/*<div className="title">
-                  {day.label}
-                </div>*/}
-                {hours.map(hour => {
-                  return (
-                    <Selectable 
-                      key={hour.label}
-                      hour={hour} day={day}/>
-                  )
-                })}
-              </div>
-            )
-          })
-        }
-        <style jsx=''>{`
-          .schedule {
-            display: grid;
-            grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        <div className="schedule"
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}>
+          <div className="items">
+            {hours.map(item => {
+              return (
+                <div key={item.label} className="item times">{item.label}</div>
+              )
+            })}
+          </div>
+          {
+            days.map(day => {
+              return (
+                <div key={day.key} className="items">
+                  {hours.map(hour => {
+                    return (
+                      <Selectable 
+                        key={hour.label}
+                        hour={hour} day={day}/>
+                    )
+                  })}
+                </div>
+              )
+            })
           }
-          .schedule .title {
-            background-color: #333;
-            color: #fff;
-            border-color: #333!important;
-          }
-          .schedule .item, .schedule .title {
-            font-family: sans-serif;
-            border: solid 0.5px #ddd;
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            padding: 0 5px;
-            font-size: 14px;
-          }
-          .schedule .title {
-            justify-content: center;
-          }
-          .schedule .item.selectable:hover {
-            background-color: #ddd;
-          }
-          .schedule .item.selectable.active {
-            background-color: #d4edda;
-            border-color: #3333337a!important;
-          }
-          .schedule .item.times {
-            background-color: #dddddda7;
-          }
-          .schedule span.close {
-            position: relative;
-            top: -22px;
-            font-size: 13px;
-            left: -13px;
-            background: red;
-            color: #fff;
-            width: 16px;
-            border-radius: 50%;
-            height: 16px;
-            display: flex;
-            justify-content: center;
-            cursor: pointer;
-          }
-        `}</style>
+          <style jsx=''>{`
+            .schedule {
+              display: grid;
+              grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            }
+            .schedule_head .items {
+
+            }
+            .schedule .title {
+              background-color: #333;
+              color: #fff;
+              border-color: #333!important;
+            }
+            .schedule .item, .schedule .title {
+              font-family: sans-serif;
+              border: solid 0.5px #ddd;
+              min-height: 40px;
+              display: flex;
+              align-items: center;
+              padding: 0 5px;
+              font-size: 14px;
+            }
+            .schedule .title {
+              justify-content: center;
+            }
+            .schedule .item.selectable:hover {
+              background-color: #ddd;
+            }
+            .schedule .item.selectable.active {
+              background-color: #d4edda;
+              border-color: #3333337a!important;
+            }
+            .schedule .item.times {
+              background-color: #dddddda7;
+            }
+            .schedule span.close {
+              position: relative;
+              top: -22px;
+              font-size: 13px;
+              left: -13px;
+              background: red;
+              color: #fff;
+              width: 16px;
+              border-radius: 50%;
+              height: 16px;
+              display: flex;
+              justify-content: center;
+              cursor: pointer;
+            }
+          `}</style>
+        </div>
       </div>
     );
   }
